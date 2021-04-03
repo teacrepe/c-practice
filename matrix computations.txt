@@ -1,0 +1,95 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void add(int** result, int** a, int** b, int m, int n)
+{
+	if (!result || !a || !b) return;
+
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+			result[i][j] = a[i][j] + b[i][j];
+	}
+}
+
+void multiply(int** result, int** a, int** b, int m, int n)
+{
+	if (!result || !a || !b) return;
+
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			result[i][j] = 0;
+			for (int k = 0; k < m; k++)
+			{
+				result[i][j] += a[i][k] * b[k][j];
+			}
+		}
+	}
+}
+
+void input2Mat(int** a, int** b, int asize, int bsize)
+{
+	printf("enter a matrix:\n");
+	for (int i = 0; i < asize; i++)
+	{
+		for (int j = 0; j < asize; j++)
+			fscanf_s(stdin, "%d", &(a[i][j]));
+	}
+	printf("\nenter b matrix:\n");
+	for (int i = 0; i < bsize; i++)
+	{
+		for (int j = 0; j < bsize; j++)
+			fscanf_s(stdin, "%d", &(b[i][j]));
+	}
+}
+void printMat(int** a, int size)
+{
+	if (a == NULL)
+	{
+		printf("a is null\n");
+		return;
+	}
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+			printf(" %d", a[i][j]);
+		printf("\n");
+	}
+}
+int main()
+{
+	const int n = 4;
+
+	int** a = (int**)malloc(n * sizeof(int*));
+	for (int i = 0; i < n; i++)
+		a[i] = (int*)malloc(n * sizeof(int));
+
+	int** b = (int**)malloc(n * sizeof(int*));
+	for (int i = 0; i < n; i++)
+		b[i] = (int*)malloc(n * sizeof(int));
+
+	input2Mat(a, b, n, n);
+
+	int** sum = (int**)malloc(n * sizeof(int*));
+	for (int i = 0; i < n; i++)
+		sum[i] = (int*)malloc(n * sizeof(int));
+
+	add(sum, a, b, n, n);
+
+	printf("\nsum\n");
+	printMat(sum, n);
+
+	printf("\n");
+	int** multiplied = (int**)malloc(n * sizeof(int*));
+	for (int i = 0; i < n; i++)
+		multiplied[i] = (int*)malloc(n * sizeof(int));
+
+	multiply(multiplied, a, b, n, n);
+	printf("multiplied\n");
+
+	printMat(multiplied, n);
+	return 0;
+}
